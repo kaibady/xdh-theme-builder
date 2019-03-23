@@ -1,0 +1,23 @@
+export default {
+  '$--button-default-font-color': '$--color-text-regular',
+  '$--button-default-background-color': '$--color-white',
+  '$--button-default-border-color': '$--border-color-base',
+  '$--button-disabled-font-color': '$--color-text-placeholder',
+  '$--button-disabled-background-color': '$--color-white',
+  '$--button-disabled-border-color': '$--border-color-lighter',
+  '$--button-primary-border-color': '$--color-primary',
+  '$--button-primary-font-color': '$--color-white',
+  '$--button-primary-background-color': '$--color-primary',
+  '$--button-success-border-color': '$--color-success',
+  '$--button-success-font-color': '$--color-white',
+  '$--button-success-background-color': '$--color-success',
+  '$--button-warning-border-color': '$--color-warning',
+  '$--button-warning-font-color': '$--color-white',
+  '$--button-warning-background-color': '$--color-warning',
+  '$--button-danger-border-color': '$--color-danger',
+  '$--button-danger-font-color': '$--color-white',
+  '$--button-danger-background-color': '$--color-danger',
+  '$--button-info-border-color': '$--color-info',
+  '$--button-info-font-color': '$--color-white',
+  '$--button-info-background-color': '$--color-info'
+}
