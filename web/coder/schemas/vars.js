@@ -27,6 +27,14 @@ module.exports = {
       options: {
         method: 'get'
       }
+    },
+    {
+      path:'/api/vars/write',
+      methods: false,
+      name: 'writeVars',
+      options: {
+        method: 'post'
+      }
     }
   ]
   

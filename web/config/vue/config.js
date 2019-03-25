@@ -26,11 +26,14 @@ module.exports = merge(baseConfig, {
     let plugins = [
       // 注入静态配置
       new HTMLInjectConfig(config.baseUrl),
-      // 注入主题样式引用
-      new HTMLInjectTheme(config.baseUrl, config.themeOutputDir),
+      
       // 复制静态资源目录
       ...util.getCopyPlugins(config.extendContentBase, outputDir)
     ]
+    // 注入主题样式引用
+    if (config.preloadTheme) {
+      plugins.push(new HTMLInjectTheme(config.baseUrl, config.themeOutputDir))
+    }
     // 生产环境打包dll
     if (process.env.NODE_ENV === 'production') {
       plugins.push(

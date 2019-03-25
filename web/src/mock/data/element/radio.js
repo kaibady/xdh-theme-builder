@@ -1,0 +1,21 @@
+export default {
+  '$--radio-font-color': '$--color-text-regular',
+  '$--radio-input-background-color': '$--color-white',
+  '$--radio-input-border-color': '$--border-color-base',
+  '$--radio-icon-color': '$--color-white',
+  '$--radio-disabled-input-border-color': '$--disabled-border-base',
+  '$--radio-disabled-input-fill': '$--disabled-fill-base',
+  '$--radio-disabled-icon-color': '$--disabled-fill-base',
+  '$--radio-disabled-checked-input-border-color': '$--disabled-border-base',
+  '$--radio-disabled-checked-input-fill': '$--disabled-fill-base',
+  '$--radio-disabled-checked-icon-color': '$--color-text-placeholder',
+  '$--radio-checked-font-color': '$--color-primary',
+  '$--radio-checked-input-border-color': '$--color-primary',
+  '$--radio-checked-input-background-color': '$--color-white',
+  '$--radio-checked-icon-color': '$--color-primary',
+  '$--radio-input-border-color-hover': '$--color-primary',
+  '$--radio-button-checked-background-color': '$--color-primary',
+  '$--radio-button-checked-font-color': '$--color-white',
+  '$--radio-button-checked-border-color': '$--color-primary',
+  '$--radio-button-disabled-checked-fill': '$--border-color-extra-light'
+}

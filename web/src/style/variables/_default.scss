@@ -14,12 +14,12 @@ $--font-family: "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", 
 
 /* Transition
 -------------------------- */
-$--all-transition: all .3s cubic-bezier(.645,.045,.355,1) !default;
+$--all-transition: all .3s cubic-bezier(.645, .045, .355, 1) !default;
 $--fade-transition: opacity 300ms cubic-bezier(0.23, 1, 0.32, 1) !default;
 $--fade-linear-transition: opacity 200ms linear !default;
 $--md-fade-transition: transform 300ms cubic-bezier(0.23, 1, 0.32, 1), opacity 300ms cubic-bezier(0.23, 1, 0.32, 1) !default;
-$--border-transition-base: border-color .2s cubic-bezier(.645,.045,.355,1) !default;
-$--color-transition-base: color .2s cubic-bezier(.645,.045,.355,1) !default;
+$--border-transition-base: border-color .2s cubic-bezier(.645, .045, .355, 1) !default;
+$--color-transition-base: color .2s cubic-bezier(.645, .045, .355, 1) !default;
 
 /* Color
 -------------------------- */
@@ -199,8 +199,6 @@ $--checkbox-button-font-size: $--font-size-base !default;
 $--checkbox-button-checked-fill: $--color-primary !default;
 $--checkbox-button-checked-color: $--color-white !default;
 $--checkbox-button-checked-border-color: $--color-primary !default;
-
-
 
 /* Radio
 -------------------------- */
@@ -525,7 +523,6 @@ $--button-info-background-color: $--color-info !default;
 
 $--button-hover-tint-percent: 20% !default;
 $--button-active-shade-percent: 10% !default;
-
 
 /* cascader
 -------------------------- */

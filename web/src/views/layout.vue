@@ -11,8 +11,10 @@
 
     <div class="tools" slot="header-slot">
       <el-button size="small" round @click="handleGlobal">全局设置</el-button>
-      <el-button size="small" round @click="handleRecord">版本</el-button>
+      <el-button size="small" round>主题</el-button>
+      <el-button size="small" round @click="handleRecord">历史</el-button>
       <el-button size="small" round @click="reset">重置</el-button>
+      <el-button size="small" round type="success">保存</el-button>
       <el-button size="small" round type="warning" @click="handlePublish">编译</el-button>
     </div>
 
@@ -33,6 +35,7 @@
                        :border="false"
                        shadow
                        :collapsed.sync="collapsed"
+                       click-outside
                        position="right">
         <setting-form :model="model" @submit="handleSubmit"></setting-form>
       </xdh-slide-panel>
@@ -59,6 +62,7 @@
   import VarMixin from '@/base/mixin/vars'
   import {deepCopy} from '@/utils/convert'
   import RecordList from '@/components/record-list'
+  import merge from 'lodash/merge'
 
   function parseFormModel(model, global) {
     // {key:{key:String, value:String, color:String ref:Boolean, enabled:Boolean}}
@@ -71,7 +75,10 @@
         value: val,
         color: val
       }
-      const refValue = global[val]
+      let refValue = global[val]
+      if (refValue && refValue.includes('$--')) {
+        refValue = global[refValue]
+      }
       // 引用全局配置
       if (refValue) {
         m.ref = true
@@ -109,13 +116,13 @@
   }
 
   function restoreModels(models) {
-    const result = {...models}
-    result.global = restoreModel(models.global)
-    Object.keys(models.element).forEach(k => {
-      result.element[k] = restoreModel(models.element[k])
+    const result = deepCopy(models)
+    result.global = restoreModel(result.global)
+    Object.keys(result.element).forEach(k => {
+      result.element[k] = restoreModel(result.element[k])
     })
-    Object.keys(models.widgets).forEach(k => {
-      result.widgets[k] = restoreModel(models.widgets[k])
+    Object.keys(result.widgets).forEach(k => {
+      result.widgets[k] = restoreModel(result.widgets[k])
     })
     return result
 
@@ -132,7 +139,7 @@
     data() {
       return {
         header: {
-          title: '新德汇前端框架主题样式生成器',
+          title: '新德汇前端框架主题生成器',
           layout: 'title, -> ,slot'
         },
         collapsed: true,
@@ -194,11 +201,13 @@
             name = this.currentSetting[1];
           Object.assign(this.models[type][name], model)
         }
-        this.$message({
-          message: '保存成功！',
-          type: 'success'
-        });
-
+        this.writeVars(restoreModels(this.models)).then(res => {
+          console.log(this.models)
+          this.$message({
+            message: '配置文件生成成功，正在进行热更新！',
+            type: 'success'
+          });
+        })
       },
       handlePublish() {
         this.confirm(false).then(r => {
@@ -224,7 +233,7 @@
               message: '发布成功！',
               type: 'success'
             });
-            this.changeCss(res.id, res.files)
+            this.init()
           }
         }).catch(e => {
           this.loading = false
@@ -313,10 +322,11 @@
           if (res) {
             this.uid = res.id
             this.changeCss(res.id, res.files)
-            this.models = convertModels(res.model || models)
+            this.models = convertModels(merge({}, models, res.model || models))
           } else {
-            this.models = convertModels(models)
+            this.models = convertModels(merge({}, models))
           }
+          console.log(this.models)
           this.setSettingForm()
         })
       },
@@ -349,6 +359,9 @@
       }
       .xdh-slide-panel__inner {
         zoom: 1;
+      }
+      .xdh-menu-toggle {
+        height: calc(100% - 40px);
       }
     }
   }

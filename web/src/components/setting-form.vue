@@ -3,6 +3,7 @@
              :title="null"
              :border="false"
              fit>
+    <div class="empty" v-if="isEmpty">该组件无自定义配置项</div>
 
     <el-form :model="currentModel"
              size="small"
@@ -23,7 +24,8 @@
       </el-form-item>
     </el-form>
     <div slot="footer" class="footer">
-      <el-button class="submit"
+      <el-button v-if="!isEmpty"
+                 class="submit"
                  type="primary"
                  size="small"
                  @click="handleSubmit">确定
@@ -48,6 +50,11 @@
         currentModel: {
           ...this.model
         }
+      }
+    },
+    computed: {
+      isEmpty() {
+        return Object.keys(this.currentModel).length === 0
       }
     },
     watch: {
@@ -103,5 +110,9 @@
     }
   }
 
+  .empty {
+    padding: 20px;
+    text-align: center;
+  }
 
 </style>

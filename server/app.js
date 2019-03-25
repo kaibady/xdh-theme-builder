@@ -131,6 +131,17 @@ app.get('/api/load/:id', (req, res) => {
   })
 })
 
+// 写样式配置
+app.post('/api/vars/write', (req, res) => {
+  utils.setHeaders(req, res)
+  const body = req.body
+  utils.writeVars(body)
+  res.json({
+    code: 0,
+    data: true
+  })
+})
+
 // 导出样式变量
 app.get('/api/export/:id', (req, res) => {
   res.set('Content-Type', 'text/scss');
@@ -139,6 +150,7 @@ app.get('/api/export/:id', (req, res) => {
   const str = utils.createVars(model)
   res.send(str)
 })
+
 
 // app.post('/api/mix', (req, res) => {
 //   utils.setHeaders(req, res)

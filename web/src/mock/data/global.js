@@ -22,5 +22,6 @@ export default {
   '$--font-color-disabled-base': '#bbb',
   '$--disabled-fill-base': '$--background-color-base',
   '$--disabled-color-base': '$--color-text-placeholder',
-  '$--disabled-border-base': '$--border-color-light'
+  '$--disabled-border-base': '$--border-color-light',
+  '$--group-title-color': '$--color-black'
 }

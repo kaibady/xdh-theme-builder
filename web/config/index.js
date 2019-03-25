@@ -84,6 +84,10 @@ module.exports = {
    * 生产环境打包dll
    */
   dll: ['vue', 'vue-router', 'vuex', 'axios', 'path-to-regexp', 'element-ui', 'nprogress'],
+  /**
+   * 预先加载编译好的主题
+   */
+  preloadTheme: false,
   
   /**
    * node_modules 仓库

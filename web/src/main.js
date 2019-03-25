@@ -6,6 +6,7 @@
 
 import Vue from 'vue'
 import ElementUI from 'element-ui'
+import Preview from '@/components/preview'
 
 // 根组件
 import App from './App.vue'
@@ -30,6 +31,7 @@ import './style/index.scss'
 
 // 全局注册element组件
 Vue.use(ElementUI)
+Vue.component(Preview.name, Preview)
 
 // 注册路由守卫
 guarder(router)

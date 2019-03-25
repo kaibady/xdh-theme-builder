@@ -6,6 +6,9 @@ function createRoutes() {
   let routes = [{
     path: '',
     component: _import(`index`)
+  }, {
+    path: ':id',
+    component: _import(`index`)
   }]
   let keys = Object.keys(models.element)
   let elements = keys.map(k => {
