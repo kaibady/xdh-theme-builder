@@ -91,7 +91,7 @@
         margin-bottom: 0;
         height: 32px;
         padding: 5px 10px;
-        border-bottom: 1px solid $--color-primary-light-9;
+        border-bottom: 1px solid $--border-color-extra-light;
         &:hover {
           background: $--color-info-lighter
         }

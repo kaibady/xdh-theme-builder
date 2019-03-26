@@ -31,37 +31,56 @@ import collapse from './collapse'
 import transfer from './transfer'
 import timeline from './timeline'
 
-export default {
-  button,
-  icon,
-  checkbox,
-  radio,
-  select,
-  alert,
-  message,
-  'message-box': messageBox,
-  notification,
-  input,
-  cascader,
-  tab,
-  Switch,
-  dialog,
-  table,
-  pagination,
-  popover,
-  tooltip,
-  tag,
-  tree,
-  dropdown,
-  badge,
-  card,
-  slider,
-  steps,
-  menu,
-  datepicker,
-  carousel,
-  rate,
-  collapse,
-  transfer,
-  timeline
+export const elementGroups = {
+  '基础组件': {
+    button,
+    icon
+  },
+  '表单相关': {
+    checkbox,
+    radio,
+    select,
+    input,
+    cascader,
+    Switch,
+    slider,
+    datepicker,
+    rate,
+    transfer
+  },
+  '消息通知': {
+    alert,
+    messageBox,
+    message,
+    notification
+  },
+  '导航菜单': {
+    tab,
+    dropdown,
+    steps,
+    menu,
+    collapse,
+    timeline
+  },
+  '数据': {
+    table,
+    tree,
+    tag,
+    pagination,
+    badge
+  },
+  '其他': {
+    dialog,
+    popover,
+    tooltip,
+    card,
+    carousel
+  }
 }
+
+const defaultValue = {}
+Object.keys(elementGroups).forEach(k => {
+  Object.assign(defaultValue, elementGroups[k])
+})
+
+export default defaultValue

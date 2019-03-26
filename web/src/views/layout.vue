@@ -7,11 +7,14 @@
              :footer="null"
              fixed
              v-loading="loading"
+             element-loading-text="正在进行热更新，请等待..."
+             element-loading-spinner="el-icon-loading"
+             element-loading-background="rgba(0, 0, 0, 0.8)"
              @menu-select="handleMenuSelect">
 
     <div class="tools" slot="header-slot">
-      <el-button size="small" round @click="handleTheme">主题</el-button>
-      <el-button size="small" round @click="handleHome">首页</el-button>
+      <el-button size="small" round @click="handleHome">主页</el-button>
+      <el-button size="small" round @click="handleTheme">管理</el-button>
       <el-button size="small" round @click="handleGlobal">设置</el-button>
       <el-button size="small" round @click="handleRecord">版本</el-button>
       <el-button size="small" round @click="reset">重置</el-button>
@@ -58,6 +61,7 @@
   import XdhSlidePanel from '@/widgets/xdh-slide-panel'
   import SettingForm from '@/components/setting-form'
   import models from '@/mock/data'
+  import {elementGroups} from '@/mock/data/element'
   import VarMixin from '@/base/mixin/vars'
   import {deepCopy} from '@/utils/convert'
   import RecordList from '@/components/record-list'
@@ -191,7 +195,12 @@
         })
       },
       handleTheme() {
-        this.$router.push('/')
+        this.$router.push({
+          path: '/',
+          query: {
+            tid: this.$route.params.tid
+          }
+        })
       },
       handleHome() {
         this.$router.push('/' + this.$route.params.tid)
@@ -210,6 +219,7 @@
           Object.assign(this.models[type][name], model)
         }
         this.writeVars(restoreModels(this.models)).then(res => {
+          this.loading = true
           this.$message({
             message: '配置文件生成成功，正在进行热更新！',
             type: 'success'
@@ -230,11 +240,9 @@
         }
       },
       saveVars(title = '', tid) {
-        this.loading = true
         this.models.title = title
         const themeId = tid || this.$route.params.tid
         this.addVars(themeId, restoreModels(this.models)).then(res => {
-          this.loading = false
           if (res) {
             this.uid = res._id
             this.$message({
@@ -243,26 +251,8 @@
             });
           }
         }).catch(e => {
-          this.loading = false
+          console.log(e)
         })
-      },
-      publish(title = '') {
-        this.loading = true
-        this.models.title = title
-        this.addVars(restoreModels(this.models)).then(res => {
-          this.loading = false
-          if (res) {
-            this.uid = res.id
-            this.$message({
-              message: '发布成功！',
-              type: 'success'
-            });
-            this.init()
-          }
-        }).catch(e => {
-          this.loading = false
-        })
-
       },
       reset() {
         this.confirm(true).then(r => {
@@ -298,20 +288,24 @@
       },
       getElementData() {
         const themeId = this.$route.params.tid
-        const elements = this.models.element
-        const items = Object.keys(elements).map(el => {
-          return {
-            id: '/element/' + el + '/' + themeId,
-            text: el,
-            icon: 'el-icon-document'
-          }
+        const result = []
+        Object.keys(elementGroups).forEach(k => {
+          const group = elementGroups[k]
+          const items = Object.keys(group).map(el => {
+            return {
+              id: '/element/' + el + '/' + themeId,
+              text: el,
+              icon: 'el-icon-document'
+            }
+          })
+          result.push({
+            id: '/element/' + k,
+            text: k,
+            icon: 'el-icon-menu',
+            children: items
+          })
         })
-        return [{
-          id: '/element',
-          text: 'Element',
-          icon: 'el-icon-menu',
-          children: items
-        }]
+        return result
       },
       getWidgetsData() {
         const themeId = this.$route.params.tid
@@ -349,6 +343,7 @@
         this.models = convertModels(merge({}, models, vars))
         this.setSettingForm()
         this.writeVars(restoreModels(this.models)).then(res => {
+          this.loading = true
           this.$message({
             message: '配置文件生成成功，正在进行热更新！',
             type: 'success'
@@ -358,6 +353,11 @@
       },
       loadRecord(model) {
         this.changeCss(model._id, model.files)
+      },
+      hotReload(e) {
+        if (e && e.data && e.data.type === 'webpackOk') {
+          this.loading = false
+        }
       }
     },
     created() {
@@ -366,6 +366,10 @@
       if (themeId) {
         this.initVars(themeId).then(this.init)
       }
+      window.addEventListener('message', this.hotReload)
+    },
+    beforeDestroy() {
+      window.removeEventListener('message', this.hotReload)
     }
   }
 </script>

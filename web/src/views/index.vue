@@ -1,86 +1,94 @@
 <template>
   <div class="page-scss">
-    <h2>主题配色</h2>
+    <preview title="主题配色">
+      <xdh-grid :data="colors" direction="row" justify="flex-start" wrap="wrap" class="box-grid">
+        <template slot-scope="scope">
+          <div :class="['box-item', scope.item]">
+            $--{{scope.item}}
+          </div>
+        </template>
+      </xdh-grid>
+    </preview>
+
+    <preview title="辅助色">
+      <xdh-grid :data="success" direction="row" justify="flex-start" wrap="wrap" class="box-grid">
+        <template slot-scope="scope">
+          <div :class="['box-item', scope.item]">
+            $--{{scope.item}}
+          </div>
+        </template>
+      </xdh-grid>
 
 
-    <xdh-grid :data="colors" direction="row" justify="flex-start" wrap="wrap" class="box-grid">
-      <template slot-scope="scope">
-        <div :class="['box-item', scope.item]">
-          $--{{scope.item}}
-        </div>
-      </template>
-    </xdh-grid>
-
-    <xdh-grid :data="success" direction="row" justify="flex-start" wrap="wrap" class="box-grid">
-      <template slot-scope="scope">
-        <div :class="['box-item', scope.item]">
-          $--{{scope.item}}
-        </div>
-      </template>
-    </xdh-grid>
+      <xdh-grid :data="warning" direction="row" justify="flex-start" wrap="wrap" class="box-grid">
+        <template slot-scope="scope">
+          <div :class="['box-item', scope.item]">
+            $--{{scope.item}}
+          </div>
+        </template>
+      </xdh-grid>
 
 
-    <xdh-grid :data="warning" direction="row" justify="flex-start" wrap="wrap" class="box-grid">
-      <template slot-scope="scope">
-        <div :class="['box-item', scope.item]">
-          $--{{scope.item}}
-        </div>
-      </template>
-    </xdh-grid>
-
-    <xdh-grid :data="danger" direction="row" justify="flex-start" wrap="wrap" class="box-grid">
-      <template slot-scope="scope">
-        <div :class="['box-item', scope.item]">
-          $--{{scope.item}}
-        </div>
-      </template>
-    </xdh-grid>
-
-    <xdh-grid :data="info" direction="row" justify="flex-start" wrap="wrap" class="box-grid">
-      <template slot-scope="scope">
-        <div :class="['box-item', scope.item]">
-          $--{{scope.item}}
-        </div>
-      </template>
-    </xdh-grid>
+      <xdh-grid :data="danger" direction="row" justify="flex-start" wrap="wrap" class="box-grid">
+        <template slot-scope="scope">
+          <div :class="['box-item', scope.item]">
+            $--{{scope.item}}
+          </div>
+        </template>
+      </xdh-grid>
 
 
-    <xdh-grid :data="text" direction="row" justify="flex-start" wrap="wrap" class="box-grid">
-      <template slot-scope="scope">
-        <div :class="['box-item', scope.item.code]">
-          {{scope.item.name}} <br/>
-          $--{{scope.item.code}}
-        </div>
-      </template>
-    </xdh-grid>
+      <xdh-grid :data="info" direction="row" justify="flex-start" wrap="wrap" class="box-grid">
+        <template slot-scope="scope">
+          <div :class="['box-item', scope.item]">
+            $--{{scope.item}}
+          </div>
+        </template>
+      </xdh-grid>
+    </preview>
 
+    <preview title="文本颜色">
+      <xdh-grid :data="text" direction="row" justify="flex-start" wrap="wrap" class="box-grid">
+        <template slot-scope="scope">
+          <div :class="['box-item', scope.item.code]">
+            {{scope.item.name}} <br/>
+            $--{{scope.item.code}}
+          </div>
+        </template>
+      </xdh-grid>
+    </preview>
 
-    <xdh-grid :data="border" direction="row" justify="flex-start" wrap="wrap" class="box-grid">
-      <template slot-scope="scope">
-        <div :class="['box-item', scope.item.code]">
-          {{scope.item.name}} <br/>
-          $--{{scope.item.code}}
-        </div>
-      </template>
-    </xdh-grid>
+    <preview title="边框颜色">
+      <xdh-grid :data="border" direction="row" justify="flex-start" wrap="wrap" class="box-grid">
+        <template slot-scope="scope">
+          <div :class="['box-item', scope.item.code]">
+            {{scope.item.name}} <br/>
+            $--{{scope.item.code}}
+          </div>
+        </template>
+      </xdh-grid>
+    </preview>
 
-    <xdh-grid :data="['background-color-base']" direction="row" justify="flex-start" wrap="wrap" class="box-grid">
-      <template slot-scope="scope">
-        <div :class="['box-item', scope.item]">
-          $--{{scope.item}}
-        </div>
-      </template>
-    </xdh-grid>
+    <preview title="背景颜色">
+      <xdh-grid :data="['background-color-base']" direction="row" justify="flex-start" wrap="wrap" class="box-grid">
+        <template slot-scope="scope">
+          <div :class="['box-item', scope.item]">
+            $--{{scope.item}}
+          </div>
+        </template>
+      </xdh-grid>
+    </preview>
 
-    <xdh-grid :data="link" direction="row" justify="flex-start" wrap="wrap" class="box-grid">
-      <template slot-scope="scope">
-        <div :class="['box-item', scope.item.code]">
-          {{scope.item.name}} <br/>
-          $--{{scope.item.code}}
-        </div>
-      </template>
-    </xdh-grid>
-
+    <preview title="链接颜色">
+      <xdh-grid :data="link" direction="row" justify="flex-start" wrap="wrap" class="box-grid">
+        <template slot-scope="scope">
+          <div :class="['box-item', scope.item.code]">
+            {{scope.item.name}} <br/>
+            $--{{scope.item.code}}
+          </div>
+        </template>
+      </xdh-grid>
+    </preview>
   </div>
 </template>
 
@@ -175,10 +183,6 @@
 
 <style lang="scss" scoped>
   @import "../../src/style/vars";
-
-  .box-grid {
-    margin-bottom: 20px;
-  }
 
   .code {
     background: #eee;

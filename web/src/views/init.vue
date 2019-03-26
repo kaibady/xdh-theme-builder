@@ -2,8 +2,7 @@
   <div>
     <el-dialog
       title="主题"
-      :visible="true"
-      :show-close="false"
+      :visible.sync="visible"
       width="900px">
 
       <el-table
@@ -65,7 +64,15 @@
     data() {
       return {
         dialogVisible: false,
+        visible: true,
         input: ''
+      }
+    },
+    watch: {
+      visible(val) {
+        if (!val && this.$route.query.tid) {
+          this.$router.push(`/${this.$route.query.tid}`)
+        }
       }
     },
     methods: {
