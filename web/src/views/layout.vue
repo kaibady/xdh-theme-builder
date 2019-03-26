@@ -234,7 +234,6 @@
       handleMenuSelect(index) {
         const arr = index.substring(1).split('/')
         this.setSettingForm(arr[0], arr[1])
-        this.collapsed = false
       },
       handleSubmit(model) {
         if (this.currentSetting === 'global') {
@@ -256,7 +255,6 @@
       },
       handleGlobal() {
         this.setSettingForm()
-        this.collapsed = false
       },
       writeVarsFile() {
         this.writeVars(restoreModels(this.models)).then(res => {
@@ -292,21 +290,30 @@
       setSettingForm(type, name) {
         if (type) {
           this.model = this.models[type][name]
-          this.settingTitle = `${type}/${name}`
+          this.settingTitle = `${type} / ${name}`
           this.currentSetting = [type, name]
         } else {
           this.model = this.models.global
-          this.settingTitle = '全局设置'
+          this.settingTitle = '公共变量设置'
           this.currentSetting = 'global'
         }
+        this.collapsed = false
       },
-      init(vars) {
+      init(vars, tid) {
         if (vars._id) {
           this.uid = vars._id
+        }
+        const themeId = tid || this.$route.params.tid
+        this.menu = {
+          router: true,
+          defaultOpeneds: ['/element'],
+          data: parseMenuData(themeId, elementGroups, 'element')
         }
         this.models = convertModels(merge({}, models, vars))
         this.setSettingForm()
         this.writeVarsFile()
+
+
       },
       hotReload(e) {
         if (e && e.data && e.data.type === 'webpackOk') {
