@@ -10,9 +10,10 @@
              @menu-select="handleMenuSelect">
 
     <div class="tools" slot="header-slot">
-      <el-button size="small" round @click="handleHome">主题</el-button>
-      <el-button size="small" round @click="handleGlobal">全局设置</el-button>
-      <el-button size="small" round @click="handleRecord">历史</el-button>
+      <el-button size="small" round @click="handleTheme">主题</el-button>
+      <el-button size="small" round @click="handleHome">首页</el-button>
+      <el-button size="small" round @click="handleGlobal">设置</el-button>
+      <el-button size="small" round @click="handleRecord">版本</el-button>
       <el-button size="small" round @click="reset">重置</el-button>
       <el-button size="small" round type="success" @click="saveVars('')">保存</el-button>
       <!--<el-button size="small" round type="warning" @click="handlePublish">编译</el-button>-->
@@ -44,8 +45,7 @@
         width="800px">
         <record-list :visible="dialogVisible" :uid.sync="uid" @remove="handleRemove" @load="loadRecord"></record-list>
         <span slot="footer" class="dialog-footer">
-          <el-button @click="dialogVisible = false">取 消</el-button>
-          <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
+          <el-button @click="dialogVisible = false" type="primary">关 闭</el-button>
         </span>
       </el-dialog>
     </div>
@@ -110,6 +110,11 @@
         model[key] = m.enabled ? m.color : m.value
       } else {
         model[key] = m.color
+      }
+    })
+    Object.entries(model).forEach(arr => {
+      if (arr[0] === `$--${arr[1]}`) {
+        delete model[arr[0]]
       }
     })
     return model
@@ -185,8 +190,11 @@
           type: 'warning'
         })
       },
-      handleHome() {
+      handleTheme() {
         this.$router.push('/')
+      },
+      handleHome() {
+        this.$router.push('/' + this.$route.params.tid)
       },
       handleMenuSelect(index, path) {
         const arr = index.substring(1).split('/')

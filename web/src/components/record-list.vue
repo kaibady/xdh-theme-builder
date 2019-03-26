@@ -59,8 +59,8 @@
       visible(val) {
         val && this.fetchVars(this.tid)
       },
-      uid(val) {
-        this.varsId = val
+      '$route.path'(val) {
+        this.tid = this.$route.params.tid
       }
     },
     data() {

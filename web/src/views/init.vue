@@ -5,7 +5,7 @@
       :visible="true"
       :show-close="false"
       width="900px">
-      <el-button class="tool" type="primary" @click="handleAdd">新增</el-button>
+
       <el-table
         :data="themes.list"
         row-key="_id"
@@ -24,6 +24,7 @@
           prop="_time"
           label="创建时间"
           width="200">
+          <template slot-scope="{row}">{{formatDate(row._time)}}</template>
         </el-table-column>
         <el-table-column
           prop="address"
@@ -34,7 +35,9 @@
           </template>
         </el-table-column>
       </el-table>
-
+      <span slot="footer" class="dialog-footer">
+          <el-button type="primary" @click="handleAdd">新增</el-button>
+        </span>
     </el-dialog>
 
     <el-dialog
@@ -55,6 +58,7 @@
   import themesMixin from '@/base/mixin/themes'
   import varsMixin from '@/base/mixin/vars'
   import bus from '@/utils/bus'
+  import formatDate from '@/utils/date'
 
   export default {
     mixins: [themesMixin, varsMixin],
@@ -65,6 +69,9 @@
       }
     },
     methods: {
+      formatDate(str) {
+        return formatDate(str, 'yyyy-MM-dd hh:mm:ss')
+      },
       handleChange(row) {
         this.initVars(row._id).then(res => {
           bus.$emit('init', res, row._id)
@@ -107,9 +114,5 @@
 </script>
 
 <style lang="scss" scoped>
-  .tool {
-    position: absolute;
-    right: 20px;
-    top: 20px;
-  }
+
 </style>

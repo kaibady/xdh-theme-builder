@@ -20,6 +20,16 @@ import tag from './tag'
 import tree from './tree'
 import dropdown from './dropdown'
 import badge from './badge'
+import card from './card'
+import slider from './slider'
+import steps from './steps'
+import menu from './menu'
+import datepicker from './datepicker'
+import carousel from './carousel'
+import rate from './rate'
+import collapse from './collapse'
+import transfer from './transfer'
+import timeline from './timeline'
 
 export default {
   button,
@@ -43,5 +53,15 @@ export default {
   tag,
   tree,
   dropdown,
-  badge
+  badge,
+  card,
+  slider,
+  steps,
+  menu,
+  datepicker,
+  carousel,
+  rate,
+  collapse,
+  transfer,
+  timeline
 }

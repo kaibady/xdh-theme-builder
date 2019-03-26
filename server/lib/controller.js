@@ -23,7 +23,6 @@ module.exports = {
     })
   },
   getAllTheme(themeTable, req, res) {
-    console.log(themeTable)
     const list = themeTable.list() || []
     res.json({
       code: 0,
