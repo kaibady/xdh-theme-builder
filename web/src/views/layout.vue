@@ -46,7 +46,7 @@
         title="版本记录"
         :visible.sync="dialogVisible"
         width="800px">
-        <record-list :visible="dialogVisible" :uid.sync="uid" @remove="handleRemove" @load="loadRecord"></record-list>
+        <record-list :visible="dialogVisible" :uid.sync="uid" @remove="handleRemove"></record-list>
         <span slot="footer" class="dialog-footer">
           <el-button @click="dialogVisible = false" type="primary">关 闭</el-button>
         </span>
@@ -62,6 +62,7 @@
   import SettingForm from '@/components/setting-form'
   import models from '@/mock/data'
   import {elementGroups} from '@/mock/data/element'
+  import {widgetsGroups} from '@/mock/data/widgets'
   import VarMixin from '@/base/mixin/vars'
   import {deepCopy} from '@/utils/convert'
   import RecordList from '@/components/record-list'
@@ -80,6 +81,7 @@
         color: val
       }
       let refValue = global[val]
+      // 排除需要经过计算的变量值
       if (refValue && refValue.includes('$--')) {
         refValue = global[refValue]
       }
@@ -117,6 +119,7 @@
       }
     })
     Object.entries(model).forEach(arr => {
+      // 删除需要经过计算的变量
       if (arr[0] === `$--${arr[1]}`) {
         delete model[arr[0]]
       }
@@ -135,6 +138,27 @@
     })
     return result
 
+  }
+
+  function parseMenuData(tid, groups, type) {
+    const result = []
+    Object.keys(groups).forEach(k => {
+      const group = groups[k]
+      const items = Object.keys(group).map(el => {
+        return {
+          id: `/${type}/${el}/${tid}`,
+          text: el,
+          icon: 'el-icon-document'
+        }
+      })
+      result.push({
+        id: `/${type}/${k}`,
+        text: k,
+        icon: 'el-icon-menu',
+        children: items
+      })
+    })
+    return result
   }
 
   export default {
@@ -167,17 +191,18 @@
       type: {
         immediate: true,
         handler(val) {
+          const tid = this.$route.params.tid
           if (val === 'Element') {
             this.menu = {
               router: true,
               defaultOpeneds: ['/element'],
-              data: this.getElementData()
+              data: parseMenuData(tid, elementGroups, 'element')
             }
           } else {
             this.menu = {
               router: true,
               defaultOpeneds: ['/widgets'],
-              data: this.getWidgetsData()
+              data: parseMenuData(tid, widgetsGroups, 'widgets')
             }
           }
         }
@@ -204,8 +229,9 @@
       },
       handleHome() {
         this.$router.push('/' + this.$route.params.tid)
+        this.setSettingForm()
       },
-      handleMenuSelect(index, path) {
+      handleMenuSelect(index) {
         const arr = index.substring(1).split('/')
         this.setSettingForm(arr[0], arr[1])
         this.collapsed = false
@@ -218,18 +244,7 @@
             name = this.currentSetting[1];
           Object.assign(this.models[type][name], model)
         }
-        this.writeVars(restoreModels(this.models)).then(res => {
-          this.loading = true
-          this.$message({
-            message: '配置文件生成成功，正在进行热更新！',
-            type: 'success'
-          });
-        })
-      },
-      handlePublish() {
-        this.confirm(false).then(r => {
-          this.publish()
-        })
+        this.writeVarsFile()
       },
       handleRecord() {
         this.dialogVisible = true
@@ -239,6 +254,19 @@
           this.init()
         }
       },
+      handleGlobal() {
+        this.setSettingForm()
+        this.collapsed = false
+      },
+      writeVarsFile() {
+        this.writeVars(restoreModels(this.models)).then(res => {
+          this.loading = true
+          this.$message({
+            message: '配置文件写入成功，正在进行热更新！',
+            type: 'success'
+          })
+        })
+      },
       saveVars(title = '', tid) {
         this.models.title = title
         const themeId = tid || this.$route.params.tid
@@ -246,7 +274,7 @@
           if (res) {
             this.uid = res._id
             this.$message({
-              message: '写入scss变量成功！正在执行热更新',
+              message: '保存成功！',
               type: 'success'
             });
           }
@@ -261,19 +289,6 @@
           this.setSettingForm()
         })
       },
-      handleGlobal() {
-        this.setSettingForm()
-        this.collapsed = false
-      },
-      replaceGlobalKey(model) {
-        Object.keys(model).forEach(key => {
-          const globalValue = this.models.global[model[key]]
-          if (globalValue) {
-            model[key] = globalValue
-          }
-        })
-        return model
-      },
       setSettingForm(type, name) {
         if (type) {
           this.model = this.models[type][name]
@@ -281,78 +296,17 @@
           this.currentSetting = [type, name]
         } else {
           this.model = this.models.global
-          // this.replaceGlobalKey(this.model)
           this.settingTitle = '全局设置'
           this.currentSetting = 'global'
         }
       },
-      getElementData() {
-        const themeId = this.$route.params.tid
-        const result = []
-        Object.keys(elementGroups).forEach(k => {
-          const group = elementGroups[k]
-          const items = Object.keys(group).map(el => {
-            return {
-              id: '/element/' + el + '/' + themeId,
-              text: el,
-              icon: 'el-icon-document'
-            }
-          })
-          result.push({
-            id: '/element/' + k,
-            text: k,
-            icon: 'el-icon-menu',
-            children: items
-          })
-        })
-        return result
-      },
-      getWidgetsData() {
-        const themeId = this.$route.params.tid
-        const widgets = this.models.widgets
-        const items = Object.keys(widgets).map(el => {
-          return {
-            id: '/widgets/' + el + '/' + themeId,
-            text: el,
-            icon: 'el-icon-document'
-          }
-        })
-        return [{
-          id: '/widgets/',
-          text: 'Widgets',
-          icon: 'el-icon-menu',
-          children: items
-        }]
-      },
-      changeCss(uid, files) {
-        if (!this.links) {
-          this.links = Array.from(document.getElementsByTagName('link')).filter(link => {
-            const href = link.href
-            return href.includes('theme')
-          })
-        }
-        const path = `/output/${uid}/css/`
-        this.links.forEach((link, index) => {
-          link.href = path + files[index]
-        })
-      },
-      init(vars, themeId) {
+      init(vars) {
         if (vars._id) {
           this.uid = vars._id
         }
         this.models = convertModels(merge({}, models, vars))
         this.setSettingForm()
-        this.writeVars(restoreModels(this.models)).then(res => {
-          this.loading = true
-          this.$message({
-            message: '配置文件生成成功，正在进行热更新！',
-            type: 'success'
-          });
-        })
-        // console.log(this.models)
-      },
-      loadRecord(model) {
-        this.changeCss(model._id, model.files)
+        this.writeVarsFile()
       },
       hotReload(e) {
         if (e && e.data && e.data.type === 'webpackOk') {

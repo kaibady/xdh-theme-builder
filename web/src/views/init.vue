@@ -3,6 +3,7 @@
     <el-dialog
       title="主题"
       :visible.sync="visible"
+      :show-close="showClose"
       width="900px">
 
       <el-table
@@ -73,6 +74,11 @@
         if (!val && this.$route.query.tid) {
           this.$router.push(`/${this.$route.query.tid}`)
         }
+      }
+    },
+    computed: {
+      showClose() {
+        return !!this.$route.query.tid
       }
     },
     methods: {
