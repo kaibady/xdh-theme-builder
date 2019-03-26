@@ -5,22 +5,22 @@ const _import = require('../utils/view-import/' + process.env.NODE_ENV)
 function createRoutes() {
   let routes = [{
     path: '',
-    component: _import(`index`)
+    component: _import(`init`)
   }, {
-    path: ':id',
+    path: ':tid',
     component: _import(`index`)
   }]
   let keys = Object.keys(models.element)
   let elements = keys.map(k => {
     return {
-      path: `element/${k}`,
+      path: `element/${k}/:tid`,
       component: _import(`element/${k}`)
     }
   })
   keys = Object.keys(models.widgets)
   let widgets = keys.map(k => {
     return {
-      path: `widgets/${k}`,
+      path: `widgets/${k}/:tid`,
       component: _import(`widgets/${k}`)
     }
   })

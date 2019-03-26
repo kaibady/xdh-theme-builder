@@ -9,17 +9,19 @@
              size="small"
              label-width="340px"
              label-position="left">
-      <el-form-item v-for="item in currentModel"
+      <el-form-item v-for="item in showModel"
                     :key="item.key"
                     :label="item.key">
-        <el-switch class="switch" v-if="item.ref" v-model="item.enabled"></el-switch>
+        <el-switch class="switch" v-if="item.ref" v-model="currentModel[item.key].enabled"></el-switch>
 
         <el-tooltip v-if="item.ref" :disabled="item.enabled" class="item" effect="dark" :content="`引用：${item.value}`"
                     placement="top">
-          <el-color-picker class="picker" v-model="item.color" show-alpha :disabled="!item.enabled"></el-color-picker>
+          <el-color-picker class="picker" v-model="currentModel[item.key].color" show-alpha
+                           :disabled="!item.enabled"></el-color-picker>
         </el-tooltip>
 
-        <el-color-picker v-if="!item.ref" class="picker" v-model="item.color" show-alpha></el-color-picker>
+        <el-color-picker v-if="!item.ref" class="picker" v-model="currentModel[item.key].color"
+                         show-alpha></el-color-picker>
 
       </el-form-item>
     </el-form>
@@ -55,6 +57,14 @@
     computed: {
       isEmpty() {
         return Object.keys(this.currentModel).length === 0
+      },
+      showModel() {
+        let result = {}
+        const keys = Object.keys(this.currentModel)
+        keys.filter(k => !!k.includes('$--')).forEach(n => {
+          result[n] = this.currentModel[n]
+        })
+        return result
       }
     },
     watch: {

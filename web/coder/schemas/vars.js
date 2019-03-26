@@ -2,18 +2,10 @@ module.exports = {
   vuex: false,
   model: [
     {
-      path: '/api/vars'
+      path: '/api/vars/:tid'
     },
     {
-      path: '/api/vars/clear',
-      methods: false,
-      name: 'clearVars',
-      options: {
-        method: 'post'
-      }
-    },
-    {
-      path: '/api/init',
+      path: '/api/init/:tid',
       methods: false,
       name: 'initVars',
       options: {
@@ -21,15 +13,7 @@ module.exports = {
       }
     },
     {
-      path: '/api/load/:id',
-      methods: false,
-      name: 'loadVars',
-      options: {
-        method: 'get'
-      }
-    },
-    {
-      path:'/api/vars/write',
+      path: '/api/write',
       methods: false,
       name: 'writeVars',
       options: {

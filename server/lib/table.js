@@ -70,6 +70,10 @@ class Table {
     fs.unlinkSync(this.file)
   }
   
+  destroy() {
+    this.data = null
+  }
+  
   
 }
 

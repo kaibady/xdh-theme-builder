@@ -10,12 +10,12 @@
              @menu-select="handleMenuSelect">
 
     <div class="tools" slot="header-slot">
+      <el-button size="small" round @click="handleHome">主题</el-button>
       <el-button size="small" round @click="handleGlobal">全局设置</el-button>
-      <el-button size="small" round>主题</el-button>
       <el-button size="small" round @click="handleRecord">历史</el-button>
       <el-button size="small" round @click="reset">重置</el-button>
-      <el-button size="small" round type="success">保存</el-button>
-      <el-button size="small" round type="warning" @click="handlePublish">编译</el-button>
+      <el-button size="small" round type="success" @click="saveVars('')">保存</el-button>
+      <!--<el-button size="small" round type="warning" @click="handlePublish">编译</el-button>-->
     </div>
 
     <div class="type" slot="menu-prepend">
@@ -35,7 +35,6 @@
                        :border="false"
                        shadow
                        :collapsed.sync="collapsed"
-                       click-outside
                        position="right">
         <setting-form :model="model" @submit="handleSubmit"></setting-form>
       </xdh-slide-panel>
@@ -43,7 +42,7 @@
         title="版本记录"
         :visible.sync="dialogVisible"
         width="800px">
-        <record-list :visible="dialogVisible" :uid="uid" @remove="handleRemove" @load="loadRecord"></record-list>
+        <record-list :visible="dialogVisible" :uid.sync="uid" @remove="handleRemove" @load="loadRecord"></record-list>
         <span slot="footer" class="dialog-footer">
           <el-button @click="dialogVisible = false">取 消</el-button>
           <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
@@ -62,6 +61,7 @@
   import VarMixin from '@/base/mixin/vars'
   import {deepCopy} from '@/utils/convert'
   import RecordList from '@/components/record-list'
+  import bus from '@/utils/bus'
   import merge from 'lodash/merge'
 
   function parseFormModel(model, global) {
@@ -139,7 +139,7 @@
     data() {
       return {
         header: {
-          title: '新德汇前端框架主题生成器',
+          title: '组件主题定制工具',
           layout: 'title, -> ,slot'
         },
         collapsed: true,
@@ -202,7 +202,6 @@
           Object.assign(this.models[type][name], model)
         }
         this.writeVars(restoreModels(this.models)).then(res => {
-          console.log(this.models)
           this.$message({
             message: '配置文件生成成功，正在进行热更新！',
             type: 'success'
@@ -221,6 +220,23 @@
         if (model._id === this.uid) {
           this.init()
         }
+      },
+      saveVars(title = '', tid) {
+        this.loading = true
+        this.models.title = title
+        const themeId = tid || this.$route.params.tid
+        this.addVars(themeId, restoreModels(this.models)).then(res => {
+          this.loading = false
+          if (res) {
+            this.uid = res._id
+            this.$message({
+              message: '写入scss变量成功！正在执行热更新',
+              type: 'success'
+            });
+          }
+        }).catch(e => {
+          this.loading = false
+        })
       },
       publish(title = '') {
         this.loading = true
@@ -243,12 +259,11 @@
       reset() {
         this.confirm(true).then(r => {
           this.models = convertModels(models)
-          this.publish('重置')
+          this.saveVars('重置')
           this.setSettingForm()
         })
       },
       handleGlobal() {
-        this.$router.push('/')
         this.setSettingForm()
         this.collapsed = false
       },
@@ -274,10 +289,11 @@
         }
       },
       getElementData() {
+        const themeId = this.$route.params.tid
         const elements = this.models.element
         const items = Object.keys(elements).map(el => {
           return {
-            id: '/element/' + el,
+            id: '/element/' + el + '/' + themeId,
             text: el,
             icon: 'el-icon-document'
           }
@@ -290,16 +306,17 @@
         }]
       },
       getWidgetsData() {
+        const themeId = this.$route.params.tid
         const widgets = this.models.widgets
         const items = Object.keys(widgets).map(el => {
           return {
-            id: '/widgets/' + el,
+            id: '/widgets/' + el + '/' + themeId,
             text: el,
             icon: 'el-icon-document'
           }
         })
         return [{
-          id: '/widgets',
+          id: '/widgets/',
           text: 'Widgets',
           icon: 'el-icon-menu',
           children: items
@@ -317,25 +334,30 @@
           link.href = path + files[index]
         })
       },
-      init() {
-        this.initVars().then(res => {
-          if (res) {
-            this.uid = res.id
-            this.changeCss(res.id, res.files)
-            this.models = convertModels(merge({}, models, res.model || models))
-          } else {
-            this.models = convertModels(merge({}, models))
-          }
-          console.log(this.models)
-          this.setSettingForm()
+      init(vars, themeId) {
+        if (vars._id) {
+          this.uid = vars._id
+        }
+        this.models = convertModels(merge({}, models, vars))
+        this.setSettingForm()
+        this.writeVars(restoreModels(this.models)).then(res => {
+          this.$message({
+            message: '配置文件生成成功，正在进行热更新！',
+            type: 'success'
+          });
         })
+        // console.log(this.models)
       },
       loadRecord(model) {
         this.changeCss(model._id, model.files)
       }
     },
     created() {
-      this.init()
+      bus.$on('init', this.init)
+      const themeId = this.$route.params.tid
+      if (themeId) {
+        this.initVars(themeId).then(this.init)
+      }
     }
   }
 </script>

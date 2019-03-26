@@ -1,3 +1,3 @@
 export default {
-  '$--dropdown-menuItem-hover-color': '$--link-color'
+  '$--dropdown-menuItem-hover-color': '$--color-primary'
 }

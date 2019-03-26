@@ -8,10 +8,14 @@
       :data="vars.list"
       style="width: 100%">
       <el-table-column
+        type="index"
+      >
+      </el-table-column>
+      <el-table-column
         prop="_id"
         label="id">
         <template slot-scope="{row}">
-          <span :class="{current: uid===row._id}">{{row._id}}</span>
+          <span :class="{current: varsId===row._id}">{{row._id}}</span>
         </template>
       </el-table-column>
       <el-table-column
@@ -43,6 +47,7 @@
 <script>
   import VarMixin from '@/base/mixin/vars'
   import dateFormat from '@/utils/date'
+  import bus from '@/utils/bus'
 
   export default {
     mixins: [VarMixin],
@@ -52,26 +57,31 @@
     },
     watch: {
       visible(val) {
-        val && this.fetchVars()
+        val && this.fetchVars(this.tid)
+      },
+      uid(val) {
+        this.varsId = val
       }
     },
     data() {
       return {
-        dialogVisible: false
+        dialogVisible: false,
+        tid: this.$route.params.tid,
+        varsId: this.uid
       }
     },
     methods: {
       handleBlur(row) {
-        this.updateVars(row)
+        this.updateVars(this.tid, row)
       },
       load(row) {
-        this.loadVars(row._id).then(res => {
-          this.$emit('load', row)
-        })
+        this.$emit('update:uid', row._id)
+        this.varsId = row._id
+        bus.$emit('init', row, this.tid)
       },
       remove(model, index) {
         this.$confirm('确定删除该记录？', '提示').then(r => {
-          this.removeVars(model._id, null, index).then(res => {
+          this.removeVars(this.tid, model._id, null, index).then(res => {
             this.$message({
               message: '删除成功！',
               type: 'success'
@@ -82,14 +92,14 @@
         })
       },
       output(row) {
-        window.open('http://127.0.0.1:3000/api/export/' + row._id)
+        window.open(`http://127.0.0.1:3000/api/export/${this.tid}/${row._id}`)
       },
       dateFormat(time) {
         return dateFormat(time, 'yyyy-MM-dd hh:mm:ss')
       }
     },
     created() {
-      this.fetchVars()
+      this.fetchVars(this.tid)
     }
   }
 </script>
