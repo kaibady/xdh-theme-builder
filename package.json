@@ -1,0 +1,16 @@
+{
+  "name": "xdh-theme-builder",
+  "version": "1.0.0",
+  "description": "#### Description 主题可视化生成工具",
+  "main": "index.js",
+  "scripts": {
+    "server": "node ./server/app.js",
+    "dev":"npm run server & cd web && node node_modules/@vue/cli-service/bin/vue-cli-service.js serve --open"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://gitee.com/newgateway/xdh-theme-builder.git"
+  },
+  "author": "",
+  "license": "ISC"
+}
