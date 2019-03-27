@@ -113,15 +113,15 @@
     keys.forEach(key => {
       const m = model[key]
       if (m.ref) {
-        model[key] = m.enabled ? m.color : m.value
+        if (m.enabled) {
+          model[key] = m.color
+        } else if (m.value.includes('$--')) {
+          model[key] = m.value
+        } else {
+          delete model[key]
+        }
       } else {
         model[key] = m.color
-      }
-    })
-    Object.entries(model).forEach(arr => {
-      // 删除需要经过计算的变量
-      if (arr[0] === `$--${arr[1]}`) {
-        delete model[arr[0]]
       }
     })
     return model
@@ -257,6 +257,7 @@
         this.setSettingForm()
       },
       writeVarsFile() {
+        console.log(this.models.global)
         this.writeVars(restoreModels(this.models)).then(res => {
           this.loading = true
           this.$message({
@@ -339,8 +340,8 @@
   @import "../style/vars";
 
   .preview {
-    background: $--color-background;
-    color: $--color-front;
+    background: $--color-white;
+    color: $--color-text-primary;
   }
 
   .app-layout {

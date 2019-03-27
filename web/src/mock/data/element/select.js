@@ -13,5 +13,7 @@ export default {
   '$--select-option-selected-hover': '$--background-color-base',
   '$--select-group-color': '$--color-info',
   '$--select-dropdown-background': '$--color-white',
-  '$--select-dropdown-empty-color': '#999'
+  '$--select-dropdown-empty-color': '#999',
+  '$--select-tag-background-color': '#f0f2f5',
+  '$--select-tag-color': '$--color-text-secondary'
 }

@@ -1,5 +1,9 @@
+import layout from './layout'
+
 export const widgetsGroups = {
-  '排版': {},
+  '排版': {
+    layout
+  },
   '容器': {},
   '导航': {},
   '表单': {},

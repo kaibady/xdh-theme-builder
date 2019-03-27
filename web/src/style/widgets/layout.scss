@@ -84,15 +84,16 @@
     bottom: -12px;
     text-align: center;
     font-size: 12px;
-    color: $--color-info;
     line-height: 12px;
     i {
       width: 50px;
       height: 100%;
-      background: $--color-primary-light-8;
+      color: $--widgets-layout-split-color;
+      background: $--widgets-layout-split-background-color;
       cursor: pointer;
       &:hover {
-        background: $--color-primary-light-9;
+        background: $--widgets-layout-split-background-color-hover;
+        color: $--widgets-layout-split-color-hover;
       }
     }
   }
@@ -103,7 +104,6 @@
     right: -12px;
     top: 0;
     font-size: 12px;
-    color: $--color-info;
     i {
       position: absolute;
       left: 0;
@@ -111,10 +111,12 @@
       height: 50px;
       line-height: 50px;
       transform: translateY(-50%);
-      background: $--color-primary-light-8;
+      color: $--widgets-layout-split-color;
+      background: $--widgets-layout-split-background-color;
       cursor: pointer;
       &:hover {
-        background: $--color-primary-light-9;
+        background: $--widgets-layout-split-background-color-hover;
+        color: $--widgets-layout-split-color-hover;
       }
     }
   }
@@ -126,15 +128,16 @@
     left: 0;
     font-size: 12px;
     text-align: center;
-    color: $--color-info;
     line-height: 12px;
     i {
       width: 50px;
       height: 100%;
-      background: $--color-primary-light-8;
+      color: $--widgets-layout-split-color;
+      background: $--widgets-layout-split-background-color;
       cursor: pointer;
       &:hover {
-        background: $--color-primary-light-9;
+        background:  $--widgets-layout-split-background-color-hover;
+        color: $--widgets-layout-split-color-hover;
       }
     }
   }
@@ -145,7 +148,6 @@
     left: -12px;
     top: 0;
     font-size: 12px;
-    color: $--color-info;
     i {
       position: absolute;
       top: 50%;
@@ -153,10 +155,12 @@
       height: 50px;
       line-height: 50px;
       transform: translateY(-50%);
-      background: $--color-primary-light-8;
+      color: $--widgets-layout-split-color;
+      background: $--widgets-layout-split-background-color;
       cursor: pointer;
       &:hover {
-        background: $--color-primary-light-9;
+        background:  $--widgets-layout-split-background-color-hover;
+        color: $--widgets-layout-split-color-hover;
       }
     }
   }

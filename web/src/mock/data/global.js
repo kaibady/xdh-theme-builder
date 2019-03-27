@@ -1,6 +1,4 @@
 export default {
-  '$--color-background': '#fff',
-  '$--color-front': '#333',
   '$--color-white': '#fff',
   '$--color-black': '#000',
   '$--color-primary': '#409EFF',
@@ -35,6 +33,8 @@ export default {
   '$--border-color-extra-light': '#f2f6fc',
   '$--border-color-hover': '$--color-text-placeholder',
   '$--background-color-base': '#f5f7fa',
+  '$--link-color': 'color-primary-light-2',
+  '$--link-hover-color': '$--color-primary',
   '$--fill-base': '$--color-white',
   '$--font-color-disabled-base': '#bbb',
   '$--disabled-fill-base': '$--background-color-base',

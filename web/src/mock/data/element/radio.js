@@ -3,6 +3,7 @@ export default {
   '$--radio-input-background-color': '$--color-white',
   '$--radio-input-border-color': '$--border-color-base',
   '$--radio-icon-color': '$--color-white',
+  '$--radio-disabled-font-color': '$--disabled-fill-base',
   '$--radio-disabled-input-border-color': '$--disabled-border-base',
   '$--radio-disabled-input-fill': '$--disabled-fill-base',
   '$--radio-disabled-icon-color': '$--disabled-fill-base',
@@ -16,6 +17,8 @@ export default {
   '$--radio-input-border-color-hover': '$--color-primary',
   '$--radio-button-checked-background-color': '$--color-primary',
   '$--radio-button-checked-font-color': '$--color-white',
+  '$--radio-button-border-color': '$--border-color-base',
   '$--radio-button-checked-border-color': '$--color-primary',
-  '$--radio-button-disabled-checked-fill': '$--border-color-extra-light'
+  '$--radio-button-disabled-checked-fill': '$--border-color-extra-light',
+  '$--radio-button-disabled-border-color': '$--disabled-border-base'
 }

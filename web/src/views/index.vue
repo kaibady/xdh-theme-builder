@@ -89,6 +89,19 @@
         </template>
       </xdh-grid>
     </preview>
+
+    <preview title="禁用颜色">
+
+      <xdh-grid :data="disabled" direction="row" justify="flex-start" wrap="wrap" class="box-grid">
+        <template slot-scope="scope">
+          <div :class="['box-item', scope.item]">
+            $--{{scope.item}}
+          </div>
+        </template>
+      </xdh-grid>
+
+    </preview>
+
   </div>
 </template>
 
@@ -165,7 +178,12 @@
         }, {
           code: 'link-hover-color',
           name: '鼠标经过'
-        }]
+        }],
+        disabled: [
+          'disabled-fill-base',
+          'disabled-color-base',
+          'disabled-border-base'
+        ]
       }
     },
     computed: {
@@ -196,6 +214,18 @@
     text-align: center;
     line-height: 80px;
 
+  }
+
+  .disabled-fill-base {
+    background: $--disabled-fill-base;
+  }
+
+  .disabled-color-base {
+    background: $--disabled-color-base;
+  }
+
+  .disabled-border-base {
+    background: $--disabled-border-base;
   }
 
   .color-primary {

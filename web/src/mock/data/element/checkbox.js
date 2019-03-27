@@ -1,16 +1,23 @@
 export default {
-  '$--checkbox-color': '$--color-text-regular',
-  '$--checkbox-input-fill': '$--color-white',
+  '$--checkbox-font-color': '$--color-text-regular',
+  '$--checkbox-input-background-color': '$--color-white',
   '$--checkbox-input-border-color': '$--border-color-base',
   '$--checkbox-icon-color': '$--color-white',
+  '$--checkbox-disabled-font-color': '$--color-text-placeholder',
   '$--checkbox-disabled-input-border-color': '$--border-color-base',
   '$--checkbox-disabled-input-fill': '#edf2fc',
   '$--checkbox-disabled-icon-color': '$--color-text-placeholder',
   '$--checkbox-disabled-checked-input-fill': '$--border-color-extra-light',
   '$--checkbox-disabled-checked-input-border-color': '$--border-color-base',
-  '$--checkbox-checked-text-color': '$--color-primary',
+  '$--checkbox-disabled-checked-icon-color': '$--color-text-placeholder',
+  '$--checkbox-checked-font-color': '$--color-primary',
   '$--checkbox-checked-input-border-color': '$--color-primary',
-  '$--checkbox-checked-input-fill': '$--color-primary',
+  '$--checkbox-checked-input-background-color': '$--color-primary',
   '$--checkbox-checked-icon-color': '$--fill-base',
-  '$--checkbox-input-border-color-hover': '$--color-primary'
+  '$--checkbox-button-border-color': '$--border-color-base',
+  '$--checkbox-input-border-color-hover': '$--color-primary',
+  '$--checkbox-button-checked-background-color': '$--color-primary',
+  '$--checkbox-button-checked-font-color': '$--color-white',
+  '$--checkbox-button-checked-border-color': '$--color-primary',
+  '$--checkbox-button-disabled-border-color': '$--disabled-fill-base'
 }
