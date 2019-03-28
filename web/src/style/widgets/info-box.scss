@@ -1,7 +1,7 @@
 @import "../vars";
 
 .xdh-info-box {
-  background: #fff;
+  background: $--color-white;
   color: rgba(0, 0, 0, .6);
   &__icon {
     transition: all .3s linear;

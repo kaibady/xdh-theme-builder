@@ -1,10 +1,25 @@
 import layout from './layout'
+import header from './header'
+import list from './list'
+import calendar from './calendar'
+import title from './title'
+import chartCard from './chart-card'
+import infoBox from './info-box'
+import panel from './panel'
 
 export const widgetsGroups = {
   '排版': {
-    layout
+    layout,
+    header,
+    list,
+    calendar
   },
-  '容器': {},
+  '容器': {
+    title,
+    'chart-card': chartCard,
+    'info-box': infoBox,
+    panel
+  },
   '导航': {},
   '表单': {},
   '动效': {},
