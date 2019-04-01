@@ -6,6 +6,9 @@ import title from './title'
 import chartCard from './chart-card'
 import infoBox from './info-box'
 import panel from './panel'
+import tabs from './tabs'
+import window from './window'
+import dialog from './dialog'
 
 export const widgetsGroups = {
   '排版': {
@@ -18,7 +21,10 @@ export const widgetsGroups = {
     title,
     'chart-card': chartCard,
     'info-box': infoBox,
-    panel
+    panel,
+    tabs,
+    window,
+    dialog
   },
   '导航': {},
   '表单': {},

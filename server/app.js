@@ -1,5 +1,5 @@
-const express = require('express');
-const bodyParser = require('body-parser');
+const express = require('../web/node_modules/express');
+const bodyParser = require('../web/node_modules/body-parser');
 const path = require('path')
 const ctrl = require('./lib/controller');
 const utils = require('./lib/utils');

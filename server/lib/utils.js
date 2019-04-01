@@ -1,7 +1,7 @@
 const path = require('path')
 const fs = require('fs')
-const rm = require('rimraf')
-const sass = require('node-sass')
+const rm = require('../../web/node_modules/rimraf')
+const sass = require('../../web/node_modules/node-sass')
 
 module.exports = {
   setHeaders(req, res) {
