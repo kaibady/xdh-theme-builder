@@ -7,6 +7,7 @@ const ELEMENT_UI_FILE = 'node_modules/element-ui/lib/element-ui.common.js'
 const AXIOS_FILE = 'node_modules/axios/lib/adapters/xhr.js'
 const GOJS_FILE = 'node_modules/gojs/release/go.js'
 const CONTEXTMENU_FILE = 'node_modules/v-contextmenu/src/components/Contextmenu.vue'
+const ELEMENT_VARS_PATH = 'node_modules/element-ui/packages/theme-chalk/src/common/var.scss'
 
 function fixElementUI() {
   try {
@@ -112,18 +113,18 @@ function fixVContextMenu() {
       return
     }
     content = content
-    .replace(editTopTarget,
-      `/* modify */
+      .replace(editTopTarget,
+        `/* modify */
         ${editTopTarget}
         ${minTopExp}
       /* modify */`
-    )
-    .replace(editLeftTarget,
-      `/* modify */
+      )
+      .replace(editLeftTarget,
+        `/* modify */
         ${editLeftTarget}
         ${minLeftExp}
       /* modify */`
-    )
+      )
     fs.writeFileSync(CONTEXTMENU_FILE, content, 'utf-8')
     console.log(`fix ${CONTEXTMENU_FILE} ${chalk.green(`success`)}`)
   } catch (e) {
@@ -131,7 +132,23 @@ function fixVContextMenu() {
   }
 }
 
+function copyElementThemeVar() {
+  const projectVarPath = 'src/style/variables/_default.scss'
+  const oldContent = fs.readFileSync(projectVarPath, 'utf-8')
+  const varContent = fs.readFileSync(ELEMENT_VARS_PATH, 'utf-8')
+  const regex = /\/\/start[\w\W]*\/\/end/g
+  const newContent = `//start
+  ${varContent}
+//end`
+  
+  const content = oldContent.replace(regex, newContent)
+  fs.writeFileSync(projectVarPath, content, 'utf-8')
+  console.log(`write ${projectVarPath} ${chalk.green('success')}`)
+
+}
+
 fixElementUI()
 fixAxios()
 fixGojs()
 fixVContextMenu()
+copyElementThemeVar()

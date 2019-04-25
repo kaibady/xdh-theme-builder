@@ -7,7 +7,7 @@ const VueLibsConfig = require('./config/vue/libs.config')
 const VueDocsConfig = require('./config/vue/docs.config')
 const VueAppConfig = require('./config/vue/app.config')
 const VueBridgeConfig = require('./config/vue/bridge.config')
-const VueCustomConfig = require('./config/vue/custom.config')
+
 const appsDir = `./${config.appsConfigDir}`
 const appsPath = path.join(__dirname, appsDir)
 
@@ -15,7 +15,6 @@ let configs = {
   bridge: VueBridgeConfig,
   libs: VueLibsConfig,
   docs: VueDocsConfig,
-  custom: VueCustomConfig,
   default: VueConfig
 }
 

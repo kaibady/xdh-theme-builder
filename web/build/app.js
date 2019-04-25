@@ -41,9 +41,9 @@ const PACKAGE_PATH = path.join(ROOT, 'package.json');
 const PROXY_PATH = path.join(ROOT, 'app.proxy.json');
 
 function addAppProxy(options) {
-  if (options.outDir === options.publicPath) {
+  if (options.outDir === options.baseUrl) {
     let proxy = {};
-    proxy[url.format(options.publicPath)] = {
+    proxy[url.format(options.baseUrl)] = {
       ws: true,
       changeOrigin: true,
       target: `http://localhost:${options.port}/`

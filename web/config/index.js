@@ -84,6 +84,7 @@ module.exports = {
    * 生产环境打包dll
    */
   dll: ['vue', 'vue-router', 'vuex', 'axios', 'path-to-regexp', 'element-ui', 'nprogress'],
+  
   /**
    * 预先加载编译好的主题
    */
@@ -101,7 +102,7 @@ module.exports = {
     /**
      * 分支名称，仅对git有效
      */
-    branch: 'v3.x',
+    branch: 'master',
     
     /**
      * 仓库地址
@@ -143,18 +144,13 @@ module.exports = {
       '/src/mock',
       '/src/router',
       '/src/store',
-      '/src/style/components',
-      '/src/style/skins',
-      '/src/style/variables',
+      '/src/style/variables/_custom.scss',
       '/src/style/index.scss',
-      '/src/style/base.scss',
-      '/src/style/_vars.scss',
-      '/src/style/element.scss',
       '/src/views',
       '/src/config.js',
       '/src/main.js',
       '/src/App.vue',
-      '/config/',
+      '/config/index.js',
       '/test/',
       '/coder/schemas',
       '/coder/config.js',

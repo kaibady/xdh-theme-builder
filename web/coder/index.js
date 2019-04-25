@@ -2,6 +2,8 @@ const fs = require('fs')
 const path = require('path')
 const _ = require('lodash')
 const rm = require('rimraf')
+const commander = require('commander')
+const packageJSON = require('../package')
 const beautify = require('js-beautify').js_beautify
 const pathToRegexp = require('path-to-regexp')
 const config = require('./config')
@@ -416,7 +418,7 @@ function writeStore(json, info) {
     if (!info[name].vuex) {
       return
     }
-    modules.push(`import ${name} from '@/base/store/${ toKebabCase(name)}'`)
+    modules.push(`import ${name} from '@/base/store/${toKebabCase(name)}'`)
     extendsArray.push(name)
     
     let importTypeArray = [],
@@ -505,11 +507,12 @@ const schemaFiles = getSchemaFiles(path.join(__dirname, config.schemasDir))
 const schemaInfo = getSchemaInfo(schemaFiles)
 const schemaJSON = parseSchemas(schemaInfo)
 
-console.log('开始生成代码.....')
-rm(path.join(__dirname, '../src/base/'), function (err) {
-  if (err) throw err
+function build(dir) {
+  console.log('开始生成代码.....')
+  if (!fs.existsSync(dir)) {
+    fs.mkdirSync(dir)
+  }
   setTimeout(() => {
-    fs.mkdirSync(path.join(__dirname, '../src/base/'))
     writeApi(schemaJSON, schemaInfo)
     writeMock(schemaJSON)
     writeStore(schemaJSON, schemaInfo)
@@ -517,6 +520,14 @@ rm(path.join(__dirname, '../src/base/'), function (err) {
     writeIconData()
     console.log('代码生成完成！')
   }, 100)
-})
+}
 
-// console.log(schemaJSON)
+commander.version(packageJSON.version)
+  .option('-f, --force', '是否删除目录')
+  .parse(process.argv);
+
+const _path = path.join(__dirname, '../src/base/')
+if (commander.force) {
+  rm.sync(_path)
+}
+build(_path)

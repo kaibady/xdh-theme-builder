@@ -95,7 +95,7 @@ export default class Socket extends Events {
      * @event close
      */
     this.$emit('close', this)
-    this.delayReconnect()
+    this.options.reconnect && this.delayReconnect()
   }
   
   handleError() {

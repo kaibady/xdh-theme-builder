@@ -9,12 +9,12 @@
  * @param {Object[]} list 列表数组数据
  * @param {String|Number} parentId 根节点的父节点id标识
  * @param {Number} [level=0] 指定第一层级别的索引，可选，默认值：0
- * @param {Object} [prop={id:'id' ,parentId:'parentId', children:'children', level:'level', order:'order'}] 属性映射, 可选
- * @param {String} prop.id 节点标识
- * @param {String} prop.parentId 父节点标识
- * @param {Object[]} prop.children 子节点数组
- * @param {Number} prop.level 层级索引
- * @param {Number} prop.order 排序标识
+ * @param {Object} [map={id:'id' ,parentId:'parentId', children:'children', level:'level', order:'order'}] 属性映射, 可选
+ * @param {String} map.id 节点标识
+ * @param {String} map.parentId 父节点标识
+ * @param {Object[]} map.children 子节点数组
+ * @param {Number} map.level 层级索引
+ * @param {Number} map.order 排序标识
  * @returns {Object[]} 树结构数组
  *
  * @example
@@ -26,37 +26,53 @@
  *  //           ]
  *  //        }]
  */
-export function listToTree(list, parentId, level = 0, prop = {
-  id: 'id',
-  parentId: 'parentId',
-  children: 'children',
-  level: 'level',
-  order: 'order'
-}) {
-  let temp, result = []
-  if (!list || list.length === 0) {
-    return result
+export function listToTree(list, parentId, level = 0, map) {
+  const prop = {
+    id: 'id',
+    parentId: 'parentId',
+    children: 'children',
+    level: 'level',
+    order: 'order',
+    path: 'path',
+    ...map
   }
-  list.forEach(item => {
-    if (item[prop.parentId] === parentId) {
-      let obj = Object.assign({}, item)
-      obj[prop.level] = level
-      temp = listToTree(list, obj[prop.id], level + 1, prop)
-      if (temp.length > 0) {
-        obj[prop.children] = temp
-      }
-      result.push(obj)
-    }
-  })
-  // 有排序字段
-  if (result[0] && result[0][prop.order]) {
-    return result.sort((a, b) => {
+  
+  // 判断是否需要排序
+  if (list.length > 0 && list[0][prop.order]) {
+    list.sort((a, b) => {
       return a[prop.order] - b[prop.order]
     })
-  } else {
-    // 无排序
-    return result
   }
+  
+  let temp = Object.create(null), tree = [];
+  list.forEach(item => {
+    temp[item[prop.id]] = item
+  })
+  
+  
+  for (let key in temp) {
+    const item = temp[key]
+    const pId = item[prop.parentId]
+    if (pId === parentId) {
+      item[prop.level] = level
+      item[prop.path] = [item[prop.id]]
+      tree.push(item)
+    } else {
+      const parent = temp[pId]
+      if (parent) {
+        if (!parent[prop.children]) {
+          parent[prop.children] = []
+        }
+        const path = (parent[prop.path] || []).concat(item[prop.id])
+        
+        item[prop.level] = parent[prop.level] + 1
+        item[prop.path] = path
+        parent[prop.children].push(item)
+      }
+    }
+  }
+  return tree
+  
 }
 
 /**

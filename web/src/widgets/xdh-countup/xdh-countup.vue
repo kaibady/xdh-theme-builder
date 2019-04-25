@@ -105,6 +105,11 @@
         return options
       }
     },
+    watch: {
+      value(val) {
+        this.update(val)
+      }
+    },
     mounted() {
       this.init()
     },
